@@ -24,6 +24,7 @@ public class SASLSCRAMProducer {
 
         props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
         props.put(SaslConfigs.SASL_MECHANISM, "SCRAM-SHA-256");
+        props.put("sasl.jaas.config", "org.apache.kafka.common.security.scram.ScramLoginModule   required username='producer'   password='producer-secret';");
 
         props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "D:/sy/test_sasl/security/truststore/producer.truststore.jks"); // Replace with the absolute path on your machine
         props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "password");
@@ -39,7 +40,7 @@ public class SASLSCRAMProducer {
             String value = UUID.randomUUID().toString();
 
             ProducerRecord<String, String> producerRecord =
-                new ProducerRecord<>("sasl-scram-topic", key, value);
+                new ProducerRecord<>("my-new-topic", key, value);
             producer.send(producerRecord);
             log.info("Message sent: " + key + ":" + value);
 

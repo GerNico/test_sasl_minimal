@@ -29,7 +29,8 @@ public class SASLSCRAMConsumer {
         props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
         props.put(SaslConfigs.SASL_MECHANISM, "SCRAM-SHA-256");
 
-        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "D:/sy/test_sasl/security/truststore/consumer.truststore.jks"); 
+        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "D:/sy/test_sasl/security/truststore/consumer.truststore.jks");
+        props.put("sasl.jaas.config", "org.apache.kafka.common.security.scram.ScramLoginModule   required username='consumer'   password='consumer-secret';");
         props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "password");
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
@@ -37,7 +38,7 @@ public class SASLSCRAMConsumer {
         Thread haltedHook = new Thread(consumer::close);
         Runtime.getRuntime().addShutdownHook(haltedHook);
 
-        consumer.subscribe(Collections.singletonList("sasl-scram-topic"));
+        consumer.subscribe(Collections.singletonList("my-new-topic"));
 
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
